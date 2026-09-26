@@ -67,12 +67,11 @@ public class Producto {
     //tostring: para mostrar el producto en consola
     @Override
     public String toString() {
-        return "Producto: " +
-                "id: " + id +
-                ", nombre:" + nombre +
-                ", precio: " + precio +
-                ", stock: " + stock +
-                ", categoria: " + categoria;
+        return  "ID: " + id +
+                ", Nombre: " + nombre +
+                ", Precio: " + precio +
+                ", Stock: " + stock +
+                ", Categoría: " + categoria;
     }
 
     public static void main(String[] args) {
