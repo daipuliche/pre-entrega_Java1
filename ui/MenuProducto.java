@@ -1,30 +1,19 @@
 package ui;
 
+import java.util.List;
 import java.util.Scanner;
-
 import model.Producto;
 import service.ProductoService;
 import util.Validador;
 
-/*
-Manejar la interaccion con el usuario: mostrar el menu, leer datos, mostrar mensajes de error o exito.
 
-responsable de:
--Mostrar el menu al usuario
--Pedir los datos
--Mostrar los resultados
-
-No contiene la logica de negocio, no controla el flujo del programa. 
-
-*/
 
 public class MenuProducto {
-    //Atributo: el scanner y el service se reciben por constructor (no se crean aca dentro)
 
     private final Scanner sc;
     private final ProductoService service;
 
-    //Inyeccion por constructor, patron utilizado en spring boot
+
     public MenuProducto(Scanner sc,  ProductoService service){
         this.sc = sc;
         this.service = service;
@@ -40,29 +29,86 @@ public class MenuProducto {
         System.out.println("4. Modificar producto");
         System.out.println("5. Eliminar producto");
         System.out.println("6. Salir");
-        System.out.print("Ingrese una opción: "); //VER SI VA BIEN DE ACA PARA abajo
-        //int opcion = sc.nextInt();
-       // sc.nextLine(); //limpia el salto de línea pendiente
-       // return opcion;
+        System.out.println("-------------------------------------");
+     //   System.out.println("Ingresar una opción: ");
+
     }
 
-    //Operaciones del CRUD, cada método corresponde a una opción del menu
+
+
 
     public void crearProducto(){
-        System.out.println("Nuevo producto");
-        String nombre = Validador.leerTexto(sc, "Nombre:");
-        double precio = Validador.leerDouble(sc, "Precio:");
-        int stock = Validador.leerEntero(sc, "Stock:");
-        String categoria = Validador.leerTexto(sc, "Categoría:");
+        System.out.println("1. Nuevo producto");
+        String nombre = Validador.leerTexto(sc, "Nombre: ");
+        double precio = Validador.leerDouble(sc, "Precio: ");
+        int stock = Validador.leerEntero(sc, "Stock: ");
+        String categoria = Validador.leerTexto(sc, "Categoría: ");
 
-        //construimos el producto y lo enviamos al servicio, este se encarga de validar y asignar el id.
 
         Producto p = new Producto(nombre, precio, stock, categoria);
         Producto guardado = service.guardar(p);
-        
+
         System.out.println("Producto creado con ID: " + guardado.getId());
         
+    }
 
+
+    public void listarProductos(){
+        List<Producto> lista = service.listarTodos();
+        if (lista.isEmpty()){
+            System.out.println("No hay productos para mostrar.");
+            return;
+        }
+
+        System.out.println("Lista de productos: ");
+        for(Producto p: lista){
+            System.out.println(p);
+        }
+
+    }
+
+
+    public void buscarProductoPorId(){
+        int id = Validador.leerEntero(sc, "Ingresar el ID del producto a buscar:");
+        Producto p = service.buscarPorId(id);
+
+        if (p == null){
+            System.out.println("El producto no existe.");
+        } else {
+            System.out.println("Producto: " + p);
+        }
+    }
+
+
+    public void modificarProducto(){
+        int id = Validador.leerEntero(sc, "Ingresar el ID del producto a modificar:");
+        Producto actual = service.buscarPorId(id);
+
+        System.out.println("Producto guardado: " + actual);
+
+        if (actual == null){
+            System.out.println("El producto no existe.");
+            return;
+        }
+
+        System.out.println("Ingresar los nuevos datos para el producto: " + actual); //ver si muestra solo el id
+        String nombre = Validador.leerTexto(sc, "Nuevo nombre:");
+        double precio = Validador.leerDouble(sc, "Nuevo precio:");
+        int stock = Validador.leerEntero(sc, "Nuevo stock:");
+        String categoria = Validador.leerTexto(sc, "Nueva categoría:");
+
+
+        Producto datos = new Producto(nombre, precio, stock, categoria);
+
+        Producto modificado = service.actualizar(id, datos);
+        System.out.println("Producto modificado: " + modificado);
+    }
+
+
+    public void eliminarProducto(){
+        int id = Validador.leerEntero(sc, "Ingresar el ID del producto a eliminar: ");
+        service.eliminar(id);
+        System.out.println("Producto" + id + " eliminado.");
     }
 
 

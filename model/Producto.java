@@ -1,9 +1,9 @@
 package model;
 
+
 public class Producto {
 
 
-    //atributos privados: nadie puede editar los atributos de la clase Producto desde fuera de la clase
     private int id;
     private String nombre;
     private double precio;
@@ -11,7 +11,6 @@ public class Producto {
     private String categoria;
 
     
-    //constructor sin id, lo asigna el Productoservice
     public Producto(String nombre, double precio, int stock, String categoria) {
         this.nombre = nombre;
         this.precio = precio;
@@ -19,11 +18,11 @@ public class Producto {
         this.categoria = categoria;
     }
 
-    //constructor vacío: crear un producto y completarlo
+
     public Producto() {
     }
 
-    //getters y setters: la unica forma de acceder o modificar los atributos de la clase Producto es a través de estos métodos
+
     public int getId() {
         return id;
     }
@@ -64,19 +63,25 @@ public class Producto {
         this.categoria = categoria;
     }
 
-    //tostring: para mostrar el producto en consola
+    //tostring: sobreescribe el método heredado de Object, sirve para mostrar el producto en consola
     @Override
     public String toString() {
-        return  "ID: " + id +
-                ", Nombre: " + nombre +
-                ", Precio: " + precio +
-                ", Stock: " + stock +
-                ", Categoría: " + categoria;
+        return  "* ID: " + id + "\n" +
+
+                "- Nombre: " + nombre + "\n" +
+                "- Precio: " + precio + "\n" +
+                "- Stock: " + stock + "\n" +
+                "- Categoría: " + categoria + "\n";
     }
 
-    public static void main(String[] args) {
-        Producto producto = new Producto("Producto 1", 10.0, 100, "Categoría 1");
-        System.out.println(producto);
+    public void mostrar() {
+        System.out.println("* ID: " + id + "\n" + 
+            "- Nombre: " + nombre + "\n" +
+            "- Precio: " + precio + "\n" +
+            "- Stock: " + stock + "\n" +
+            "- Categoría: " + categoria + "\n");
+
     }
+
 
 }
